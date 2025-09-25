@@ -6,7 +6,7 @@ class IncomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Dummy data
-    final totalIncome = 1250000;
+    final totalIncome = 110000;
     final List<Map<String, dynamic>> orders = [
       {"date": "12 Sep 2025", "service": "Antar Jemput", "amount": 25000},
       {"date": "11 Sep 2025", "service": "Titip/Beli Barang", "amount": 35000},
