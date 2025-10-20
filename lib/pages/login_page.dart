@@ -1,83 +1,14 @@
+// login_page.dart (VERSI BERSIH)
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'order_page.dart';
-import 'home_page.dart';
-import 'profile_page.dart';
-import 'customer_page.dart';
-import 'income_page.dart';
-import 'rating_page.dart';
-import 'register_page.dart';
+// HAPUS SEMUA IMPORT YANG TIDAK PERLU 
+// (seperti main.dart, home_page, customer_page, dll)
 
-void main() {
-  runApp(const GotipApp());
-}
+// 1. HAPUS: void main() { ... }
+// 2. HAPUS: class GotipApp extends ... { ... }
+// 3. HAPUS: class _GotipAppState extends ... { ... }
 
-class GotipApp extends StatefulWidget {
-  const GotipApp({super.key});
-
-  @override
-  State<GotipApp> createState() => _GotipAppState();
-}
-
-class _GotipAppState extends State<GotipApp> {
-  ThemeMode _themeMode = ThemeMode.light;
-  String? loggedInUser;
-  
-  final Map<String, String> _accounts = {};
-
-  void _login(String email) {
-    setState(() {
-      loggedInUser = email.split("@")[0]; 
-    });
-  }
-
-  void _logout() {
-    setState(() {
-      loggedInUser = null;
-    });
-  }
-
-  void _register(String email, String password) {
-    setState(() {
-      _accounts[email] = password;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "GOTIP Driver",
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: _themeMode,
-      routes: {
-        '/order': (context) {
-          
-          final args = ModalRoute.of(context)?.settings.arguments as String?;
-          return OrderPage(
-            userName: loggedInUser ?? "",
-            initialService: args,
-          );
-        },
-        '/profile': (context) => ProfilePage(userName: loggedInUser ?? ""),
-        '/customers': (context) => const CustomerPage(),
-        '/income': (context) => const IncomePage(),
-        '/rating': (context) => const RatingPage(),
-      },
-      home: loggedInUser == null
-          ? AuthPage(
-              onLogin: _login,
-              onRegister: _register,
-              accounts: _accounts,
-            )
-          : HomePage(
-              userName: loggedInUser!,
-              onLogout: _logout,
-            ),
-    );
-  }
-}
+// SISA KAN HANYA KELAS-KELAS INI:
 
 class AuthPage extends StatefulWidget {
   final Function(String) onLogin;
@@ -153,6 +84,7 @@ class _AuthPageState extends State<AuthPage> {
 }
 
 class LoginForm extends StatefulWidget {
+  // ... (Tidak ada perubahan di dalam LoginForm, biarkan sama)
   final Function(String) onLogin;
   final Map<String, String> accounts;
   final VoidCallback onSwitchToRegister;
@@ -163,12 +95,13 @@ class LoginForm extends StatefulWidget {
     required this.accounts,
     required this.onSwitchToRegister,
   });
-
+  
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
 
 class _LoginFormState extends State<LoginForm> {
+  // ... (Tidak ada perubahan di dalam _LoginFormState, biarkan sama)
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -412,6 +345,7 @@ class _LoginFormState extends State<LoginForm> {
 }
 
 class RegisterForm extends StatefulWidget {
+  // ... (Tidak ada perubahan di dalam RegisterForm, biarkan sama)
   final Function(String, String) onRegister;
   final Map<String, String> accounts;
   final VoidCallback onSwitchToLogin;
@@ -428,6 +362,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  // ... (Tidak ada perubahan di dalam _RegisterFormState, biarkan sama)
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
