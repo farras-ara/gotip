@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cubit/order_cubit.dart';
-import 'pages/login_page.dart'; // sudah benar
+import 'package:gotip_driver/cubit/order_state.dart';
+import 'pages/login_page.dart'; // Mengimpor GotipApp dari login_page.dart
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+  runApp(
+    MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => OrderCubit()),
-        // ...provider lain
+      
       ],
       child: GotipApp(),
-    );
-  }
+    )
+  );
 }

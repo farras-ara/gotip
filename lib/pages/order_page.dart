@@ -1,45 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/order_cubit.dart';
-import '../models/order_model.dart';
+import '../models/order_model.dart'; 
+import '../cubit/order_cubit.dart';   
 
-// Base User class
-class User {
-  String _userName;
-  String _role;
-  
-  User({
-    required String userName,
-    String role = "driver",
-  }) : _userName = userName,
-       _role = role;
-
-  // Getters
-  String get userName => _userName;
-  String get role => _role;
-
-  // Setters
-  set userName(String value) => _userName = value;
-  set role(String value) => _role = value;
-}
-
-// List of users (for demo)
-List<User> userList = [
-  User(userName: "John", role: "driver"),
-  User(userName: "Jane", role: "driver"),
-  User(userName: "Bob", role: "admin"),
-];
-
-// OrderPage now extends StatefulWidget and uses User composition
 class OrderPage extends StatefulWidget {
   final String? initialService;
   final User user;
-  
-  OrderPage({  // Removed const
+
+  OrderPage({
     super.key,
-    required String userName,
+    required String userName, 
     this.initialService,
-  }) : user = User(userName: userName);
+  }) : user = User(userName: userName); 
 
   @override
   State<OrderPage> createState() => _OrderPageState();
@@ -47,6 +19,7 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   late String selectedService;
+  final customerNameController = TextEditingController();
   final pickupController = TextEditingController();
   final destinationController = TextEditingController();
   final itemController = TextEditingController();
@@ -130,8 +103,19 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                       ),
                       const SizedBox(height: 18),
-
-                      // Antar Jemput
+                      TextFormField(
+                        controller: customerNameController,
+                        decoration: InputDecoration(
+                          labelText: "Nama Pelanggan",
+                          prefixIcon: const Icon(Icons.person),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        validator: (v) =>
+                            v == null || v.isEmpty ? "Nama pelanggan wajib diisi" : null,
+                      ),
+                      const SizedBox(height: 18),
                       if (selectedService == "Antar Jemput") ...[
                         TextFormField(
                           controller: pickupController,
@@ -161,7 +145,7 @@ class _OrderPageState extends State<OrderPage> {
                         const SizedBox(height: 18),
                       ],
 
-                      // Titip/Beli Barang
+
                       if (selectedService == "Titip/Beli Barang") ...[
                         TextFormField(
                           controller: itemController,
@@ -204,7 +188,7 @@ class _OrderPageState extends State<OrderPage> {
                         const SizedBox(height: 18),
                       ],
 
-                      // Bantu Survei Kost
+
                       if (selectedService == "Bantu Survei Kost") ...[
                         TextFormField(
                           controller: surveyLocationController,
@@ -264,7 +248,7 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Ambil data sesuai layanan
+
                               String pickup = "";
                               String destination = "";
                               String note = noteController.text;
@@ -273,15 +257,15 @@ class _OrderPageState extends State<OrderPage> {
                                 pickup = pickupController.text;
                                 destination = destinationController.text;
                               } else if (selectedService == "Titip/Beli Barang") {
-                                pickup = pickupController.text; // alamat toko
-                                destination = destinationController.text; // alamat pengantaran
+                                pickup = pickupController.text;
+                                destination = destinationController.text;
                                 note = "Barang: ${itemController.text}. Catatan: $note";
                               } else if (selectedService == "Bantu Survei Kost") {
-                                pickup = surveyLocationController.text; // lokasi kost
-                                destination = destinationController.text; // alamat pengiriman laporan
+                                pickup = surveyLocationController.text;
+                                destination = destinationController.text;
                               }
 
-                              // ignore: unused_local_variable
+
                               final order = Order(
                                 service: selectedService,
                                 pickup: pickup,
@@ -289,10 +273,11 @@ class _OrderPageState extends State<OrderPage> {
                                 note: note,
                                 date: DateTime.now(),
                                 user: widget.user,
+                                customerName: customerNameController.text,
                               );
 
                               context.read<OrderCubit>().addOrder(order);
-                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(context, '/customers');
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Order berhasil dibuat!"),
@@ -316,86 +301,3 @@ class _OrderPageState extends State<OrderPage> {
   }
 }
 
-// BaseOrder with inheritance
-class BaseOrder {
-  final String service;
-  final DateTime date;
-  final User user;
-
-  BaseOrder({
-    required this.service,
-    required this.date,
-    required this.user,
-  });
-
-  @override
-  String toString() => 'Order by ${user.userName}';
-
-  String orderSummary() {
-    return "Layanan: $service\nDriver: ${user.userName}\nTanggal: $date";
-  }
-}
-
-// Order inherits from BaseOrder
-class Order extends BaseOrder {
-  String _pickup;
-  String _destination;
-  String _note;
-  String _status;
-
-  Order({
-    required String service,
-    required String pickup,
-    required String destination,
-    required String note,
-    required DateTime date,
-    required User user,
-    String status = "pending",
-  })  : _pickup = pickup,
-        _destination = destination,
-        _note = note,
-        _status = status,
-        super(service: service, date: date, user: user);
-
-  // Getters
-  String get pickup => _pickup;
-  String get destination => _destination;
-  String get note => _note;
-  String get status => _status;
-
-  // Setters
-  set pickup(String value) => _pickup = value;
-  set destination(String value) => _destination = value;
-  set note(String value) => _note = value;
-  set status(String value) => _status = value;
-
-  @override
-  String orderSummary() {
-    return """
-    ${super.orderSummary()}
-    Pickup: $_pickup
-    Tujuan: $_destination
-    Catatan: $_note
-    Status: $_status
-    """;
-  }
-}
-
-// OrderCubit with enhanced functionality
-class OrderCubit extends Cubit<List<Order>> {
-  OrderCubit() : super([]);
-
-  void addOrder(Order order) {
-    emit([...state, order]);
-  }
-
-  void updateOrderStatus(Order order, String newStatus) {
-    final updatedOrders = state.map((o) {
-      if (o == order) {
-        o.status = newStatus;
-      }
-      return o;
-    }).toList();
-    emit(updatedOrders);
-  }
-}

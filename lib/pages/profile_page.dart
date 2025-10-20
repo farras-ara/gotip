@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
   final String userName;
-  const ProfilePage({super.key, required this.userName});
+  ProfilePage({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,11 @@ class ProfilePage extends StatelessWidget {
               title: const Text("Email"),
               subtitle: Text("$userName,@email.com"),
             ),
-            // ignore: prefer_const_constructors
+
             ListTile(
               leading: const Icon(Icons.phone),
               title: const Text("No. HP"),
-              subtitle: const Text("08123456789"),
+              subtitle: const Text ("085134256764"),
             ),
           ],
         ),

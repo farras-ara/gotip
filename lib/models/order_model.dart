@@ -1,109 +1,39 @@
-// Superclass (Base class)
-class BaseOrder {
-  final String service;
-  final DateTime date;
-  
+class User {
+  String _userName;
+  String _role;
 
-  BaseOrder({
-    required this.service,
-    required this.date,
-  });
+  User({
+    required String userName,
+    String role = "driver",
+  })  : _userName = userName,
+        _role = role;
 
-  String getOrderInfo() {
-    return 'Service: $service, Date: $date';
-  }
+  String get userName => _userName;
+  String get role => _role;
+
+  set userName(String value) => _userName = value;
+  set role(String value) => _role = value;
 }
 
-// Specialized Order Types
-class RideOrder extends BaseOrder {
-  final int passengerCount;
-  final String vehicleType;
-
-  RideOrder({
-    required String service,
-    required DateTime date,
-    required this.passengerCount,
-    this.vehicleType = 'Motor',
-  }) : super(
-          service: service,
-          date: date,
-        );
-
-  @override
-  String getOrderInfo() {
-    return """
-    ${super.getOrderInfo()}
-    Jumlah Penumpang: $passengerCount
-    Kendaraan: $vehicleType
-    """;
-  }
-}
-
-class DeliveryOrder extends BaseOrder {
-  final String itemName;
-  final double itemWeight;
-  final bool isFragile;
-
-  DeliveryOrder({
-    required String service,
-    required DateTime date,
-    required this.itemName,
-    this.itemWeight = 0.0,
-    this.isFragile = false,
-  }) : super(
-          service: service,
-          date: date,
-        );
-
-  @override
-  String getOrderInfo() {
-    return """
-    ${super.getOrderInfo()}
-    Barang: $itemName
-    Berat: ${itemWeight}kg
-    Mudah Pecah: ${isFragile ? 'Ya' : 'Tidak'}
-    """;
-  }
-}
-
-class SurveyOrder extends BaseOrder {
-  final String kostType;
-  final bool withPhotos;
-  final double budget;
-
-  SurveyOrder({
-    required String service,
-    required DateTime date,
-    required this.kostType,
-    required this.budget,
-    this.withPhotos = true,
-  }) : super(
-          service: service,
-          date: date,
-        );
-
-  @override
-  String getOrderInfo() {
-    return """
-    ${super.getOrderInfo()}
-    Tipe Kost: $kostType
-    Budget: Rp$budget
-    Dengan Foto: ${withPhotos ? 'Ya' : 'Tidak'}
-    """;
-  }
-}
-
-class Order extends BaseOrder {
-  String _status = 'pending';
+class Order {
+  final String id;
+  String service;
+  String pickup;
+  String destination;
+  String note;
+  DateTime date;
+  User user;
+  String customerName;
+  String status;
 
   Order({
-    required String service,
-    required DateTime date,
-  }) : super(
-          service: service,
-          date: date,
-        );
-
-  String get status => _status;
-  set status(String value) => _status = value;
+    required this.service,
+    required this.pickup,
+    required this.destination,
+    required this.note,
+    required this.date,
+    required this.user,
+    required this.customerName,
+    this.status = "pending",
+  }) : id = DateTime.now().millisecondsSinceEpoch.toString(); // ID Unik Otomatis
 }
