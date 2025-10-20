@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/order_cubit.dart'; // <-- Perbaikan 1: Import OrderCubit secara langsung
+import '../cubit/order_cubit.dart'; 
 import '../models/order_model.dart';
 
 class CustomerPage extends StatelessWidget {
@@ -15,10 +15,10 @@ class CustomerPage extends StatelessWidget {
         backgroundColor: const Color(0xFF67A0FE),
         elevation: 2,
       ),
-      // Menggunakan BlocBuilder untuk mendengarkan perubahan dari OrderCubit
+
       body: BlocBuilder<OrderCubit, List<Order>>(
         builder: (context, orders) {
-          // Tampilan jika tidak ada pesanan sama sekali
+    
           if (orders.isEmpty) {
             return const Center(
               child: Column(
@@ -35,7 +35,7 @@ class CustomerPage extends StatelessWidget {
             );
           }
 
-          // Logika untuk mengelompokkan pesanan berdasarkan nama pelanggan
+
           final Map<String, List<Order>> customers = {};
           for (var order in orders) {
             if (!customers.containsKey(order.customerName)) {
@@ -46,14 +46,14 @@ class CustomerPage extends StatelessWidget {
 
           final customerNames = customers.keys.toList();
 
-          // Menampilkan daftar pelanggan dalam ListView
+  
           return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             itemCount: customerNames.length,
             itemBuilder: (context, index) {
               final customerName = customerNames[index];
               final customerOrders = customers[customerName]!;
-              final lastOrder = customerOrders.last; // Ambil order terakhir untuk info
+              final lastOrder = customerOrders.last; 
 
               return Card(
                 elevation: 3,
@@ -81,7 +81,7 @@ class CustomerPage extends StatelessWidget {
                   ),
                   subtitle: Text("${customerOrders.length} pesanan | Terakhir: ${lastOrder.service}"),
                   childrenPadding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
-                  // Menampilkan detail setiap pesanan dari pelanggan tersebut
+                
                   children: customerOrders.map((order) {
                     return ListTile(
                       title: Text(order.service, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -89,7 +89,7 @@ class CustomerPage extends StatelessWidget {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Tombol untuk menerima pesanan
+                  
                           TextButton(
                             onPressed: () {
                               context.read<OrderCubit>().acceptOrder(order.id);
@@ -102,7 +102,7 @@ class CustomerPage extends StatelessWidget {
                             },
                             child: const Text("Terima", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
                           ),
-                          // Tombol untuk menolak pesanan
+                    
                           TextButton(
                             onPressed: () {
                               context.read<OrderCubit>().rejectOrder(order.id);

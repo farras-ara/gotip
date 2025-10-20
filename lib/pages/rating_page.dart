@@ -25,9 +25,9 @@ class RatingPage extends StatelessWidget {
           return ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.blue[100],
-              child: Text((r["customer"] as String)[0]), // cast ke String
+              child: Text((r["customer"] as String)[0]), 
             ),
-            title: Text(r["customer"] as String), // cast ke String
+            title: Text(r["customer"] as String), 
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,7 +37,7 @@ class RatingPage extends StatelessWidget {
                     (index) => const Icon(Icons.star, color: Colors.amber, size: 18),
                   ),
                 ),
-                Text(r["review"] as String), // cast ke String
+                Text(r["review"] as String),
               ],
             ),
           );

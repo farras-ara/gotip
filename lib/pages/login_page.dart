@@ -1,15 +1,4 @@
-// login_page.dart (VERSI BERSIH)
-
-import 'package:flutter/material.dart';
-// HAPUS SEMUA IMPORT YANG TIDAK PERLU 
-// (seperti main.dart, home_page, customer_page, dll)
-
-// 1. HAPUS: void main() { ... }
-// 2. HAPUS: class GotipApp extends ... { ... }
-// 3. HAPUS: class _GotipAppState extends ... { ... }
-
-// SISA KAN HANYA KELAS-KELAS INI:
-
+ import 'package:flutter/material.dart';
 class AuthPage extends StatefulWidget {
   final Function(String) onLogin;
   final Function(String, String) onRegister;
@@ -101,7 +90,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  // ... (Tidak ada perubahan di dalam _LoginFormState, biarkan sama)
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -345,7 +334,7 @@ class _LoginFormState extends State<LoginForm> {
 }
 
 class RegisterForm extends StatefulWidget {
-  // ... (Tidak ada perubahan di dalam RegisterForm, biarkan sama)
+
   final Function(String, String) onRegister;
   final Map<String, String> accounts;
   final VoidCallback onSwitchToLogin;
@@ -362,7 +351,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  // ... (Tidak ada perubahan di dalam _RegisterFormState, biarkan sama)
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();

@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/order_model.dart'; // <-- Import model yang sudah benar
+import '../models/order_model.dart'; 
 
 class OrderCubit extends Cubit<List<Order>> {
   OrderCubit() : super([]);
   void addOrder(Order order) {
-    // emit([...state, order]); // Cara lama
-    final newState = List<Order>.from(state)..add(order); // Cara yang lebih aman
+
+    final newState = List<Order>.from(state)..add(order);
     emit(newState);
   }
 
