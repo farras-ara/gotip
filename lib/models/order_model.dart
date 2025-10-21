@@ -1,6 +1,4 @@
-// lib/models/order_model.dart (KODE LENGKAP)
-
-class User {
+ class User {
   String _userName;
   String _role;
 
@@ -26,7 +24,7 @@ class Order {
   DateTime date;
   User user;
   String customerName;
-  String customerPhone; // <-- INI TAMBAHANNYA
+  String customerPhone;
   String status;
 
   Order({
@@ -37,7 +35,7 @@ class Order {
     required this.date,
     required this.user,
     required this.customerName,
-    required this.customerPhone, // <-- INI TAMBAHANNYA
+    required this.customerPhone, 
     this.status = "pending",
-  }) : id = DateTime.now().millisecondsSinceEpoch.toString(); // ID Unik Otomatis
+  }) : id = DateTime.now().millisecondsSinceEpoch.toString();
 }
