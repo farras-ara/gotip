@@ -1,4 +1,7 @@
+// lib/pages/order_page.dart (KODE LENGKAP)
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // <-- Import baru
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/order_model.dart'; 
 import '../cubit/order_cubit.dart';   
@@ -20,6 +23,7 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   late String selectedService;
   final customerNameController = TextEditingController();
+  final customerPhoneController = TextEditingController(); // <-- TAMBAHAN BARU
   final pickupController = TextEditingController();
   final destinationController = TextEditingController();
   final itemController = TextEditingController();
@@ -33,6 +37,20 @@ class _OrderPageState extends State<OrderPage> {
     super.initState();
     selectedService = widget.initialService ?? "Antar Jemput";
   }
+
+  // --- TAMBAHAN BARU: Dispose controllers ---
+  @override
+  void dispose() {
+    customerNameController.dispose();
+    customerPhoneController.dispose(); // <-- TAMBAHAN BARU
+    pickupController.dispose();
+    destinationController.dispose();
+    itemController.dispose();
+    surveyLocationController.dispose();
+    noteController.dispose();
+    super.dispose();
+  }
+  // --- SELESAI TAMBAHAN ---
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +82,7 @@ class _OrderPageState extends State<OrderPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      // ... (Icon, Judul, Dropdown tetap sama) ...
                       Icon(
                         serviceIcons[selectedService],
                         color: Colors.blueAccent,
@@ -115,7 +134,38 @@ class _OrderPageState extends State<OrderPage> {
                         validator: (v) =>
                             v == null || v.isEmpty ? "Nama pelanggan wajib diisi" : null,
                       ),
+
+                      // --- TAMBAHAN BARU (KOLOM NO HP) DIMULAI DI SINI ---
                       const SizedBox(height: 18),
+                      TextFormField(
+                        controller: customerPhoneController,
+                        decoration: InputDecoration(
+                          labelText: "Nomor HP Pelanggan (WA)",
+                          prefixIcon: const Icon(Icons.phone),
+                          hintText: "Contoh: 08123456789",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly, // Hanya angka
+                        ],
+                        validator: (v) {
+                          if (v == null || v.isEmpty) {
+                            return "Nomor HP wajib diisi";
+                          }
+                          if (v.length < 9) {
+                            return "Nomor HP tidak valid";
+                          }
+                          return null;
+                        },
+                      ),
+                      // --- TAMBAHAN BARU (KOLOM NO HP) SELESAI ---
+
+                      const SizedBox(height: 18),
+                      
+                      // ... (Form input lain tetap sama) ...
                       if (selectedService == "Antar Jemput") ...[
                         TextFormField(
                           controller: pickupController,
@@ -144,8 +194,6 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         const SizedBox(height: 18),
                       ],
-
-
                       if (selectedService == "Titip/Beli Barang") ...[
                         TextFormField(
                           controller: itemController,
@@ -187,8 +235,6 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         const SizedBox(height: 18),
                       ],
-
-
                       if (selectedService == "Bantu Survei Kost") ...[
                         TextFormField(
                           controller: surveyLocationController,
@@ -217,7 +263,6 @@ class _OrderPageState extends State<OrderPage> {
                         ),
                         const SizedBox(height: 18),
                       ],
-
                       TextFormField(
                         controller: noteController,
                         decoration: InputDecoration(
@@ -231,6 +276,8 @@ class _OrderPageState extends State<OrderPage> {
                         maxLines: 3,
                       ),
                       const SizedBox(height: 28),
+                      
+                      // ... (Tombol ElevatedButton) ...
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
@@ -249,6 +296,7 @@ class _OrderPageState extends State<OrderPage> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
 
+                              // ... (Logika string pickup/destination tetap sama) ...
                               String pickup = "";
                               String destination = "";
                               String note = noteController.text;
@@ -265,7 +313,7 @@ class _OrderPageState extends State<OrderPage> {
                                 destination = destinationController.text;
                               }
 
-
+                              // --- PERBARUI PEMBUATAN OBJEK ORDER ---
                               final order = Order(
                                 service: selectedService,
                                 pickup: pickup,
@@ -274,7 +322,9 @@ class _OrderPageState extends State<OrderPage> {
                                 date: DateTime.now(),
                                 user: widget.user,
                                 customerName: customerNameController.text,
+                                customerPhone: customerPhoneController.text, // <-- TAMBAHAN BARU
                               );
+                              // --- SELESAI PERBARUAN ---
 
                               context.read<OrderCubit>().addOrder(order);
                               Navigator.pushReplacementNamed(context, '/customers');
@@ -300,4 +350,3 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 }
-
